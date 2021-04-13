@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <%= csrf_meta_tag() %>
+    <%= live_title_tag assigns[:page_title], suffix: " · Txtzn" %>
+    <link phx-track-static rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
+    <script defer phx-track-static type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
+  </head>
+  <body class="bg-gray-50">
+    <header class="w-full bg-white border-b border-gray-200">
+      <section class="max-w-full md:max-w-2xl mx-auto h-12 flex items-center justify-between">
+        <a href="/" class="ml-2 text-3xl font-bold">
+          txtzn
+        </a>
+        <label for="navmenu" class="mr-2 md:hidden">
+          Menu
+        </label>
+        <input type="checkbox" id="navmenu" class="hidden">
+        <nav role="navigation" class="sm:w-full sm:max-h-0 sm:overflow-hidden sm:fixed sm:transition-all sm:duration-500 sm:top-12 z-50">
+          <ul class="md:flex">
+            <%= case get_session(@conn, :ctzn_session) do %>
+              <% %Session{} -> %>
+                <li class="sm:bg-gray-50 sm:flex sm:justify-center sm:items-center sm:h-12 md:mr-2"><a href="/communities">Communities</a></li>
+                <li class="sm:bg-gray-50 sm:flex sm:justify-center sm:items-center sm:h-12 md:mr-2"><a href="/notifications">Notifications</a></li>
+                <li class="sm:bg-gray-50 sm:flex sm:justify-center sm:items-center sm:h-12 md:mr-2"><a href="/profile">Profile</a></li>
+              <% _ -> %>
+                <li class="sm:bg-gray-50 sm:flex sm:justify-center sm:items-center sm:h-12 md:mr-2"><a href="/signin">Sign In</a></li>
+            <% end %>
+          </ul>
+        </nav>
+      </section>
+    </header>
+    <%= @inner_content %>
+  </body>
+</html>
