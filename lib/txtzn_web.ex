@@ -44,18 +44,34 @@ defmodule TxtznWeb do
 
   def live_view do
     quote do
-      use Phoenix.LiveView,
+      use Surface.LiveView,
         layout: {TxtznWeb.LayoutView, "live.html"}
 
       unquote(view_helpers())
+
+      import TxtznWeb.LiveHelpers
     end
   end
 
   def live_component do
     quote do
-      use Phoenix.LiveComponent
+      use Surface.LiveComponent
 
       unquote(view_helpers())
+
+      alias Surface.Components.Form
+      alias Surface.Components.Form.{Field, Label, PasswordInput, TextInput}
+      alias TxtznWeb.Components.Button
+    end
+  end
+
+  def component do
+    quote do
+      use Surface.Component
+
+      unquote(view_helpers())
+
+      alias Surface.Components.{Link, LivePatch, LiveRedirect, Raw}
     end
   end
 
@@ -72,6 +88,7 @@ defmodule TxtznWeb do
   def channel do
     quote do
       use Phoenix.Channel
+
       import TxtznWeb.Gettext
     end
   end
@@ -89,6 +106,8 @@ defmodule TxtznWeb do
 
       import TxtznWeb.ErrorHelpers
       import TxtznWeb.Gettext
+
+      alias TxtznWeb.Endpoint
       alias TxtznWeb.Router.Helpers, as: Routes
     end
   end

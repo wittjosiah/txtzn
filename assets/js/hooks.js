@@ -8,15 +8,44 @@ let scrollAt = () => {
   return scrollTop / (scrollHeight - clientHeight) * 100
 }
 
-Hooks.InfiniteScroll = {
-  mounted(){
-    this.pending = false
+let grandchildren = (el) => {
+  return [].slice.call(el.children)
+    .map((child) => [].slice.call(child.children))
+    .flat()
+}
+
+Hooks.Backfeed = {
+  mounted() {
+    document.documentElement.scrollTop = document.documentElement.scrollTop + this.el.offsetHeight
+  }
+}
+
+Hooks.FeedScroll = {
+  mounted() {
+    this.loading = false
+   
+    // Reset scroll history for the feed, feed tracks scroll position, loads
+    // from closest point and the backfills the feed after initial page load
+    setTimeout(() => document.documentElement.scrollTop = 0, 1)
+
     window.addEventListener("scroll", e => {
-      if (!this.pending && scrollAt() > 90){
-        this.pending = true
+      clearTimeout(this.isScrolling)
+
+      this.isScrolling = setTimeout(() => {
+        const scrollTop = document.documentElement.scrollTop
+        const posts = grandchildren(this.el).filter(c => c.getBoundingClientRect().y < 0)
+        if (scrollTop > 0) {
+          this.pushEvent("load-from", {key: posts[posts.length - 1].id})
+        } else {
+          this.pushEvent("load-from", {})
+        }
+      }, 100)
+
+      if (!this.loading && scrollAt() > 90){
+        this.loading = true
         this.pushEvent("load-more", {})
       }
     })
   },
-  updated(){ this.pending = false }
+  updated() { this.loading = false }
 }

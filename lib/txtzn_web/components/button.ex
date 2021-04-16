@@ -3,7 +3,7 @@ defmodule TxtznWeb.Components.Button do
   Documentation for `TxtznWeb.Button`
   """
 
-  use Surface.Component
+  use TxtznWeb, :component
 
   prop full, :boolean
 

@@ -1,50 +1,17 @@
-<div id="feed" phx-hook="InfiniteScroll" phx-update="append">
-  <div :for={{ post <- @feed }} class="p-2" id="{{ post["key"] }}">
-    <div class="flex justify-between">
-      <p class="w-2/3 font-bold overflow-ellipsis overflow-hidden whitespace-nowrap">
-        <LiveRedirect
-          opts={{ title: get_in(post, ["author", "userId"]) }}
-          to="#profileTODO"
-        >
-          {{ get_in(post, ["author", "displayName"]) }}
-        </LiveRedirect>
-      </p>
-      <LiveRedirect
-        class="w-1/3 text-right text-sm text-gray-500"
-        opts={{ title: get_in(post, ["value", "createdAt"]) }}
-        to="#postTODO"
-      >
-        {{ get_in(post, ["value", "createdAgo"]) }}
-      </LiveRedirect>
+<div id="feed-container" phx-hook="FeedScroll">
+  <div
+    :if={{ render_backfeed?(@initialized, @backfeed) }}
+    id="backfeed"
+    phx-hook="Backfeed"
+    phx-update="append"
+  >
+    <div :for={{ post <- @backfeed }} class="p-2" id="{{ post["key"] }}">
+      <PostSummary post={{ post }}/>
     </div>
-    <p class="text-sm text-gray-500 overflow-ellipsis overflow-hidden whitespace-nowrap">
-      <LiveRedirect
-        opts={{ title: get_in(post, ["value", "community", "userId"]) }}
-        to="#communityTODO"
-      >
-        {{ get_in(post, ["value", "community", "value", "displayName"]) }}
-      </LiveRedirect>
-    </p>
-    <LiveRedirect to="#postTODO">
-      <p class="break-words my-1">
-        {{ get_in(post, ["value", "text"]) }}
-        <span
-          :if={{ get_in(post, ["value", "extendedText"]) != "" }}
-          class="text-gray-600 bg-gray-200 rounded ml-1 px-1 text-xs"
-        >more
-        </span>
-      </p>
-    </LiveRedirect>
-    <div class="text-sm text-gray-500 flex justify-between">
-      <LiveRedirect to="#postTODO">
-        {{ post["replyCount"] }} replies
-      </LiveRedirect>
-      <LiveRedirect
-        :if={{ get_in(post, ["value", "media"]) }}
-        to="#mediaTODO"
-      >
-        See Media
-      </LiveRedirect>
+  </div>
+  <div id="feed" phx-update="append">
+    <div :for={{ post <- @feed }} class="p-2" id="{{ post["key"] }}">
+      <PostSummary post={{ post }}/>
     </div>
   </div>
 </div>

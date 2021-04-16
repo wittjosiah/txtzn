@@ -3,11 +3,7 @@ defmodule TxtznWeb.Components.SignInForm do
   Documentation for `TxtznWeb.SigninForm`
   """
 
-  use Surface.LiveComponent
-
-  alias Surface.Components.Form
-  alias Surface.Components.Form.{Field, Label, PasswordInput, TextInput}
-  alias TxtznWeb.Components.Button
+  use TxtznWeb, :live_component
 
   @impl true
   def render(assigns) do

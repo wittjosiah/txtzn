@@ -10,7 +10,7 @@
     <script defer phx-track-static type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
   </head>
   <body class="bg-gray-50">
-    <header class="w-full bg-white border-b border-gray-200">
+    <header class="fixed top-0 w-full bg-white border-b border-gray-200">
       <section class="max-w-full md:max-w-2xl mx-auto h-12 flex items-center justify-between">
         <a href="/" class="ml-2 text-3xl font-bold">
           txtzn
@@ -23,9 +23,9 @@
           <ul class="md:flex">
             <%= case get_session(@conn, :ctzn_session) do %>
               <% %Session{} -> %>
-                <li class="sm:bg-gray-50 sm:flex sm:justify-center sm:items-center sm:h-12 md:mr-2"><a href="/communities">Communities</a></li>
-                <li class="sm:bg-gray-50 sm:flex sm:justify-center sm:items-center sm:h-12 md:mr-2"><a href="/notifications">Notifications</a></li>
-                <li class="sm:bg-gray-50 sm:flex sm:justify-center sm:items-center sm:h-12 md:mr-2"><a href="/profile">Profile</a></li>
+                <li class="sm:bg-gray-50 sm:flex sm:justify-center sm:items-center sm:h-12 md:mr-2"><a href="/#communities">Communities</a></li>
+                <li class="sm:bg-gray-50 sm:flex sm:justify-center sm:items-center sm:h-12 md:mr-2"><a href="/#notifications">Notifications</a></li>
+                <li class="sm:bg-gray-50 sm:flex sm:justify-center sm:items-center sm:h-12 md:mr-2"><a href="/#profile">Profile</a></li>
               <% _ -> %>
                 <li class="sm:bg-gray-50 sm:flex sm:justify-center sm:items-center sm:h-12 md:mr-2"><a href="/signin">Sign In</a></li>
             <% end %>

@@ -20,8 +20,10 @@ defmodule TxtznWeb.Router do
 
     live "/", LandingLive, :index
     live "/feed", FeedLive, :index
+    live "/feed/:key", FeedLive, :index
     live "/signin", SessionLive, :index
     post "/signin", SessionController, :sign_in
+    live "/:user_id/ctzn.network/post/:key", PostLive, :index
   end
 
   if Mix.env() in [:dev, :test] do

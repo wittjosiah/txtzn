@@ -1,7 +1,5 @@
 defmodule TxtznWeb.Mushroom do
-  use Surface.Component
-
-  alias Surface.Components.Raw
+  use TxtznWeb, :component
 
   def render(assigns) do
     ~H"""
