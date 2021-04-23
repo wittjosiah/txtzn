@@ -1,5 +1,5 @@
-defmodule TxtznWeb.Flower do
-  use TxtznWeb, :component
+defmodule TxtznWeb.Components.Flower do
+  use TxtznWeb, :surface_component
 
   def render(assigns) do
     ~H"""

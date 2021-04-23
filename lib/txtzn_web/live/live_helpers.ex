@@ -22,8 +22,7 @@ defmodule TxtznWeb.LiveHelpers do
     |> assign(:client_id, client_id)
   end
 
-  def assign_defaults(%Socket{} = socket, session) do
-    IO.inspect(session, label: "HELPERS")
+  def assign_defaults(%Socket{} = socket, _) do
     {:ok, redirect(socket, to: Routes.session_path(socket, :index))}
   end
 

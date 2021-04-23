@@ -1,16 +1,37 @@
 defmodule TxtznWeb.PostLive do
-  use Surface.LiveView
+  use TxtznWeb, :live_view
 
   import TxtznWeb.LiveHelpers
 
-  alias CtznClient.View
+  alias CtznClient.{Session, View, Table}
   alias Phoenix.LiveView.Socket
-  alias Surface.Components.{Link, LiveRedirect}
-  alias Txtzn.CtznCache
-  alias TxtznWeb.Components.Button
-  alias TxtznWeb.Router.Helpers, as: Routes
+  alias TxtznWeb.Components.{CommentTree, Post}
 
   require Logger
+
+  @impl true
+  def handle_event("comment", %{"comment" => %{"text" => text}}, %Socket{} = socket) do
+    %{ctzn_session: %Session{user_id: user_id}, ctzn_ws_pid: ws, post: post} = socket.assigns
+
+    community =
+      if community = get_in(post, ["value", "community"]),
+        do: Map.take(community, ["dbUrl", "userId"])
+
+    root = %{authorId: get_in(post, ["author", "userId"]), dbUrl: post["url"]}
+    reply = %{root: root}
+    value = %{reply: reply, text: text}
+    value = if community, do: Map.put(value, :community, community), else: value
+
+    case Table.create(ws, user_id, "ctzn.network/comment", value) do
+      {:ok, %{"key" => _key, "url" => _url}} ->
+        {:noreply, socket}
+
+      {:error, error} ->
+        metadata = [error: inspect(error), user_id: user_id]
+        Logger.error("Failed to create comment", metadata)
+        {:noreply, socket}
+    end
+  end
 
   @impl true
   def handle_params(%{"key" => key, "user_id" => user_id}, _uri, %Socket{} = socket) do

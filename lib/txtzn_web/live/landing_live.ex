@@ -1,9 +1,7 @@
 defmodule TxtznWeb.LandingLive do
-  use Surface.LiveView
+  use TxtznWeb, :live_view
 
   alias CtznClient.Session
-  alias TxtznWeb.{Flower, Mushroom}
-  alias TxtznWeb.Router.Helpers, as: Routes
 
   @impl true
   def mount(_params, %{"ctzn_session" => %Session{}}, socket) do

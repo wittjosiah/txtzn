@@ -9,6 +9,15 @@ input[type=checkbox]:checked ~ nav {
   @apply max-h-full border-b border-gray-100;
 }
 
+/* General */
+input[type=checkbox]:checked ~ .toggle {
+  display: initial;
+}
+
+input[type=radio]:checked + .toggle {
+  display: initial;
+}
+
 /* LiveView specific classes for your customizations */
 .phx-no-feedback.invalid-feedback,
 .phx-no-feedback .invalid-feedback {

@@ -1,0 +1,92 @@
+<div class="p-2" id={{ @post["key"] }}>
+  <div class="flex justify-between mb-2">
+    <p class="w-2/3 text-lg font-bold overflow-ellipsis overflow-hidden whitespace-nowrap">
+      <LiveRedirect
+        opts={{ title: get_in(@post, ["author", "userId"]) }}
+        to="#profileTODO"
+      >
+        {{ get_in(@post, ["author", "displayName"]) }}
+      </LiveRedirect>
+    </p>
+    <LiveRedirect
+      class="w-1/3 text-right text-sm text-gray-500 flex items-center justify-end"
+      opts={{ title: get_in(@post, ["value", "createdAt"]) }}
+      to={{ post_url(@post) }}
+    >
+      {{ get_in(@post, ["value", "createdAgo"]) }}
+    </LiveRedirect>
+  </div>
+
+  <p
+    :if={{ get_in(@post, ["value", "community"]) }}
+    class="mb-2 text-sm text-gray-500 overflow-ellipsis overflow-hidden whitespace-nowrap"
+  >
+    <LiveRedirect
+      opts={{ title: get_in(@post, ["value", "community", "userId"]) }}
+      to="#communityTODO"
+    >
+      {{ get_in(@post, ["value", "community", "value", "displayName"]) }}
+    </LiveRedirect>
+  </p>
+
+  <LiveRedirect :if={{ not @full }} to={{ post_url(@post) }}>
+    <p class="break-words">
+      {{ get_in(@post, ["value", "text"]) }}
+      <span
+        :if={{ get_in(@post, ["value", "extendedText"]) != "" }}
+        class="text-gray-600 bg-gray-200 rounded ml-1 px-1 text-xs"
+      >more
+      </span>
+    </p>
+  </LiveRedirect>
+
+  <p :if={{ @full }} class="text-lg break-words">
+    {{ get_in(@post, ["value", "text"]) }}
+  </p>
+  <p :if={{ @full }} class="break-words">
+    {{ render_extended(@post) }}
+  </p>
+
+  <div class="my-2 text-sm text-gray-500 flex justify-between">
+    <label for="react-{{ @post["key"] }}" class="cursor-pointer">
+      React
+    </label>
+    <LiveRedirect to={{ post_url(@post) }}>
+      {{ reaction_count(@post) }} reactions
+    </LiveRedirect>
+    <LiveRedirect to={{ post_url(@post) }}>
+      {{ @post["replyCount"] }} replies
+    </LiveRedirect>
+    <LiveRedirect
+      :if={{ get_in(@post, ["value", "media"]) }}
+      to="#mediaTODO"
+    >
+      See Media
+    </LiveRedirect>
+    <span :if={{ !get_in(@post, ["value", "media"]) }}>
+      No Media
+    </span>
+  </div>
+
+  <input type="checkbox" id="react-{{ @post["key"] }}" class="hidden">
+  <div class="hidden toggle">
+    <Form action="/react" for={{ :reaction }} method="POST" opts={{ class: "flex" }} submit="react">
+      <Field class="flex-grow" name="reaction">
+        <TextInput class="p-1 w-full border border-gray-300 focus:border-gray-500 outline-none"/>
+      </Field>
+      <Button class="ml-2" kind="secondary" type="submit">
+        Add
+      </Button>
+    </Form>
+  </div>
+
+  <div class="flex items-center my-1">
+    <Reaction
+      :for={{ {reaction, reactors} <- @post["reactions"] }}
+      reaction={{ reaction }}
+      reactors={{ reactors }}
+      target={{ "#" <> @post["key"] }}
+      user_id={{ @ctzn_session.user_id }}
+    />
+  </div>
+</div>

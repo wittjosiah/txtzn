@@ -3,18 +3,24 @@ defmodule TxtznWeb.FeedLive do
 
   import TxtznWeb.LiveHelpers
 
-  alias CtznClient.View
+  alias CtznClient.{Session, View, Table}
   alias Phoenix.LiveView.Socket
-  alias Surface.Components.Link
   alias Txtzn.CtznCache
-  alias TxtznWeb.Components.{Button, PostSummary}
-  alias TxtznWeb.Router.Helpers, as: Routes
+  alias TxtznWeb.Components.Post
 
   require Logger
 
   @default_opts %{limit: 15, reverse: true}
 
   @impl true
+  def handle_event(
+        "composer-toggle",
+        _,
+        %Socket{assigns: %{composer_open: composer_open}} = socket
+      ) do
+    {:noreply, assign(socket, :composer_open, !composer_open)}
+  end
+
   def handle_event("load-from", %{"key" => key}, %Socket{} = socket) do
     {:noreply, push_patch(socket, to: Routes.feed_path(socket, :index, key), replace: true)}
   end
@@ -26,6 +32,25 @@ defmodule TxtznWeb.FeedLive do
   def handle_event("load-more", _, %Socket{} = socket) do
     send(self(), :load_more)
     {:noreply, assign(socket, :loading, true)}
+  end
+
+  def handle_event("post", %{"post" => form}, %Socket{} = socket) do
+    %{ctzn_session: %Session{user_id: user_id}, ctzn_ws_pid: ws} = socket.assigns
+    value = Map.put(form, "createdAt", DateTime.to_string(DateTime.utc_now()))
+
+    case Table.create(ws, user_id, "ctzn.network/post", value) do
+      {:ok, %{"key" => _key, "url" => _url}} ->
+        {:noreply, socket}
+
+      {:error, error} ->
+        metadata = [error: inspect(error), user_id: user_id]
+        Logger.error("Failed to create post (UserId=#{user_id})", metadata)
+        {:noreply, socket}
+    end
+  end
+
+  def handle_event("post-change", %{"post" => form}, %Socket{} = socket) do
+    {:noreply, assign(socket, :composer, form)}
   end
 
   @impl true
@@ -75,7 +100,15 @@ defmodule TxtznWeb.FeedLive do
   @impl true
   def mount(_params, session, %Socket{} = socket) do
     with %Socket{} = socket <- assign_defaults(socket, session) do
-      socket = assign(socket, initialized: false, loading: false, page_title: "Feed")
+      socket =
+        assign(socket,
+          composer: %{"text" => "", "extendedText" => ""},
+          composer_open: false,
+          initialized: false,
+          loading: false,
+          page_title: "Feed"
+        )
+
       {:ok, socket, temporary_assigns: [backfeed: [], feed: []]}
     end
   end
@@ -101,19 +134,16 @@ defmodule TxtznWeb.FeedLive do
     backfeed_opts = Map.put(@default_opts, :limit, 5)
     opts = if next_key, do: Map.put(backfeed_opts, :lt, next_key), else: backfeed_opts
 
-    feed = case View.get(ws, "ctzn.network/feed-view", opts) do
-      {:ok, %{"feed" => feed}} ->
-        feed
+    feed =
+      case View.get(ws, "ctzn.network/feed-view", opts) do
+        {:ok, %{"feed" => feed}} ->
+          feed
 
-      {:error, error} ->
-        metadata = [client_id: client_id, error: inspect(error)]
-        Logger.error("Failed to fetch backfeed", metadata)
-        []
-    end
-
-    IO.inspect({until_key, next_key}, label: "KEYS")
-
-    IO.inspect(feed, label: "FEED")
+        {:error, error} ->
+          metadata = [client_id: client_id, error: inspect(error)]
+          Logger.error("Failed to fetch backfeed", metadata)
+          []
+      end
 
     until_feed =
       if key_index = Enum.find_index(feed, fn %{"key" => key} -> key == until_key end) do
@@ -121,8 +151,6 @@ defmodule TxtznWeb.FeedLive do
       else
         feed
       end
-
-    IO.inspect(until_feed, label: "UNTIL_FEED")
 
     backfeed = Enum.concat(backfeed, until_feed)
 

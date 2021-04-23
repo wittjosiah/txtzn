@@ -10,12 +10,12 @@
     <script defer phx-track-static type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
   </head>
   <body class="bg-gray-50">
-    <header class="fixed top-0 w-full bg-white border-b border-gray-200">
+    <header class="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200">
       <section class="max-w-full md:max-w-2xl mx-auto h-12 flex items-center justify-between">
         <a href="/" class="ml-2 text-3xl font-bold">
           txtzn
         </a>
-        <label for="navmenu" class="mr-2 md:hidden">
+        <label for="navmenu" class="mr-2 cursor-pointer md:hidden">
           Menu
         </label>
         <input type="checkbox" id="navmenu" class="hidden">

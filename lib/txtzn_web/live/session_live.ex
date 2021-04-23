@@ -1,10 +1,7 @@
 defmodule TxtznWeb.SessionLive do
-  use Surface.LiveView
+  use TxtznWeb, :live_view
 
   alias CtznClient.Session
-  alias Surface.Components.Link
-  alias TxtznWeb.Components.{SignInForm}
-  alias TxtznWeb.Router.Helpers, as: Routes
 
   @impl true
   def mount(_params, %{"ctzn_session" => %Session{}}, socket) do

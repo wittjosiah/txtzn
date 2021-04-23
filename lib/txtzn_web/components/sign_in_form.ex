@@ -3,7 +3,7 @@ defmodule TxtznWeb.Components.SignInForm do
   Documentation for `TxtznWeb.SigninForm`
   """
 
-  use TxtznWeb, :live_component
+  use TxtznWeb, :surface_live_component
 
   @impl true
   def render(assigns) do

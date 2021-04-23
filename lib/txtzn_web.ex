@@ -23,6 +23,7 @@ defmodule TxtznWeb do
 
       import Plug.Conn
       import TxtznWeb.Gettext
+
       alias TxtznWeb.Router.Helpers, as: Routes
     end
   end
@@ -36,6 +37,8 @@ defmodule TxtznWeb do
       # Import convenience functions from controllers
       import Phoenix.Controller,
         only: [get_flash: 1, get_flash: 2, view_module: 1, view_template: 1]
+
+      import Surface
 
       # Include shared imports and aliases for views
       unquote(view_helpers())
@@ -55,23 +58,27 @@ defmodule TxtznWeb do
 
   def live_component do
     quote do
-      use Surface.LiveComponent
+      use Phoenix.LiveComponent
+
+      import Surface
 
       unquote(view_helpers())
-
-      alias Surface.Components.Form
-      alias Surface.Components.Form.{Field, Label, PasswordInput, TextInput}
-      alias TxtznWeb.Components.Button
     end
   end
 
-  def component do
+  def surface_live_component do
+    quote do
+      use Surface.LiveComponent
+
+      unquote(view_helpers())
+    end
+  end
+
+  def surface_component do
     quote do
       use Surface.Component
 
       unquote(view_helpers())
-
-      alias Surface.Components.{Link, LivePatch, LiveRedirect, Raw}
     end
   end
 
@@ -109,6 +116,31 @@ defmodule TxtznWeb do
 
       alias TxtznWeb.Endpoint
       alias TxtznWeb.Router.Helpers, as: Routes
+
+      # Surface Components
+      alias Surface.Components.{Form, Link, LivePatch, LiveRedirect, Raw}
+
+      alias Surface.Components.Form.{
+        Checkbox,
+        Field,
+        HiddenInput,
+        Label,
+        PasswordInput,
+        TextArea,
+        TextInput
+      }
+
+      alias Surface.Constructs.{For, If}
+
+      alias TxtznWeb.Components.{
+        Button,
+        CommentTree,
+        Flower,
+        Mushroom,
+        Post,
+        Reaction,
+        SignInForm
+      }
     end
   end
 

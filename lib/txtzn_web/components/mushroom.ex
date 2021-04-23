@@ -1,5 +1,5 @@
-defmodule TxtznWeb.Mushroom do
-  use TxtznWeb, :component
+defmodule TxtznWeb.Components.Mushroom do
+  use TxtznWeb, :surface_component
 
   def render(assigns) do
     ~H"""

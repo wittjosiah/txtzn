@@ -1,12 +1,12 @@
 <div class="max-w-4xl mx-auto relative">
-    <div class="absolute -top-28 left-4 md:-top-48 md:left-0">
+    <div class="absolute -top-28 -left-4 md:-top-48 md:left-0">
       <Flower />
     </div>
-    <h1 class="text-3xl md:text-5xl mt-32 md:mt-64 w-full font-bold text-center">Your friendly neighbourhood<br>text-based CTZN client</h1>
+    <h1 class="text-3xl md:text-5xl mt-48 md:mt-64 w-full font-bold text-center">Your friendly neighbourhood<br>text-based CTZN client</h1>
     <p class="text-center mt-8 md:mt-16">
       <a href="/signin" class="text-xl px-4 py-3 border border-gray-300 hover:bg-gray-300">Sign In</a>
     </p>
-    <div class="absolute -bottom-36 right-2 md:-bottom-48 md:right-0">
+    <div class="absolute -bottom-40 right-2 md:-bottom-48 md:right-0">
       <Mushroom />
     </div>
 </div>
