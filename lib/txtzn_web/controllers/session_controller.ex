@@ -1,7 +1,7 @@
 defmodule TxtznWeb.SessionController do
   use TxtznWeb, :controller
 
-  alias CtznClient.{Accounts, Session, Supervisor}
+  alias CtznClient.{Accounts, Session}
   alias Plug.Conn
 
   def sign_in(%Conn{} = conn, %{"sign_in" => %{"user_id" => user_id, "password" => password}}) do
@@ -20,13 +20,6 @@ defmodule TxtznWeb.SessionController do
         conn
         |> put_flash(:error, "Failed to login")
         |> redirect(to: Routes.session_path(conn, :index))
-    end
-  end
-
-  defp lookup_or_start_ws(client_id, host) do
-    case Registry.lookup(Registry.CtznClient, client_id) do
-      [{pid, _}] -> {:ok, pid}
-      [] -> Supervisor.start_child(client_id: client_id, host: host)
     end
   end
 end

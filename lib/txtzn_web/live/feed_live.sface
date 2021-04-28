@@ -65,7 +65,7 @@
 <div class="text-center w-full p-4">
   <Link
     :if={{ !connected?(@socket) }}
-    to={{ Routes.feed_path(@socket, :index, lt: @next_page) }}
+    to={{ Routes.feed_path(@socket, :index, @next_page) }}
   >
     <Button kind="primary">
       More

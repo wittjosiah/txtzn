@@ -1,8 +1,9 @@
 defmodule TxtznWeb.Router do
   use TxtznWeb, :router
 
-  alias CtznClient.{Accounts, Session, Supervisor}
+  alias CtznClient.{Accounts, Session}
   alias Plug.Conn
+  alias Txtzn.CtznHelpers
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -19,8 +20,11 @@ defmodule TxtznWeb.Router do
     pipe_through :browser
 
     live "/", LandingLive, :index
+    post "/comment", CommentController, :comment
     live "/feed", FeedLive, :index
     live "/feed/:key", FeedLive, :index
+    post "/post", PostController, :post
+    post "/react", ReactionController, :react
     live "/signin", SessionLive, :index
     post "/signin", SessionController, :sign_in
     live "/:user_id/ctzn.network/post/:key", PostLive, :index
@@ -48,20 +52,12 @@ defmodule TxtznWeb.Router do
   end
 
   defp init_ctzn_ws(%Conn{assigns: %{ctzn_client_id: id}} = conn, _) do
-    with %Session{session_id: session_id, user_id: user_id} <- get_session(conn, :ctzn_session),
-         [_, host] <- String.split(user_id, "@"),
-         {:ok, pid} <- lookup_or_start_ws(id, host) do
+    with %Session{session_id: session_id} = session <- get_session(conn, :ctzn_session),
+         {:ok, pid} <- CtznHelpers.lookup_or_start_ws(id, session) do
       Accounts.resume_session(pid, session_id)
       assign(conn, :ctzn_ws_pid, pid)
     else
       _ -> conn
-    end
-  end
-
-  defp lookup_or_start_ws(client_id, host) do
-    case Registry.lookup(Registry.CtznClient, client_id) do
-      [{pid, _}] -> {:ok, pid}
-      [] -> Supervisor.start_child(client_id: client_id, host: host)
     end
   end
 end

@@ -22,6 +22,7 @@ defmodule TxtznWeb do
       use Phoenix.Controller, namespace: TxtznWeb
 
       import Plug.Conn
+      import Txtzn.CtznHelpers
       import TxtznWeb.Gettext
 
       alias TxtznWeb.Router.Helpers, as: Routes

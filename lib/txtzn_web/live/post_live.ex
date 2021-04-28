@@ -10,16 +10,20 @@ defmodule TxtznWeb.PostLive do
   require Logger
 
   @impl true
-  def handle_event("comment", %{"comment" => %{"text" => text}}, %Socket{} = socket) do
-    %{ctzn_session: %Session{user_id: user_id}, ctzn_ws_pid: ws, post: post} = socket.assigns
+  def handle_event("comment", %{"comment" => form}, %Socket{} = socket) do
+    %{ctzn_session: %Session{user_id: user_id}, ctzn_ws_pid: ws} = socket.assigns
 
     community =
-      if community = get_in(post, ["value", "community"]),
-        do: Map.take(community, ["dbUrl", "userId"])
+      with true <- is_binary(form["community"]),
+           [community_id, community_url] <- String.split(form["community"], "<>") do
+        %{dbUrl: community_url, user_id: community_id}
+      else
+        _ -> nil
+      end
 
-    root = %{authorId: get_in(post, ["author", "userId"]), dbUrl: post["url"]}
-    reply = %{root: root}
-    value = %{reply: reply, text: text}
+    [root_author, root_url] = String.split(form["root"], "<>")
+    reply = %{root: %{authorId: root_author, dbUrl: root_url}}
+    value = %{reply: reply, text: form["text"]}
     value = if community, do: Map.put(value, :community, community), else: value
 
     case Table.create(ws, user_id, "ctzn.network/comment", value) do
@@ -77,4 +81,14 @@ defmodule TxtznWeb.PostLive do
   end
 
   defp assign_thread(%Socket{} = socket), do: socket
+
+  defp community_value(%{"value" => %{"community" => community}}) do
+    "#{community["userId"]}<>#{community["dbUrl"]}"
+  end
+
+  defp community_value(_), do: nil
+
+  defp root_value(%{"author" => %{"userId" => user_id}, "url" => db_url}) do
+    "#{user_id}<>#{db_url}"
+  end
 end

@@ -71,6 +71,8 @@
   <input type="checkbox" id="react-{{ @post["key"] }}" class="hidden">
   <div class="hidden toggle">
     <Form action="/react" for={{ :reaction }} method="POST" opts={{ class: "flex" }} submit="react">
+      <HiddenInput field="post_author" value={{ get_in(@post, ["author", "userId"]) }}/>
+      <HiddenInput field="post_url" value={{ @post["url"] }}/>
       <Field class="flex-grow" name="reaction">
         <TextInput class="p-1 w-full border border-gray-300 focus:border-gray-500 outline-none"/>
       </Field>

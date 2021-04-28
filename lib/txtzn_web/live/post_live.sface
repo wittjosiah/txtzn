@@ -13,6 +13,8 @@
 <div class="hidden toggle">
   <Form action="/comment" for={{ :comment }} method="POST" opts={{ class: "m-2" }} submit="comment">
     <Field class="flex flex-col flex-wrap mb-2" name="text">
+      <HiddenInput field="community" value={{ community_value(@post) }}/>
+      <HiddenInput field="root" value={{ root_value(@post) }}/>
       <TextArea
         class="flex-grow h-screen-1/3 p-2 border border-gray-300 focus:border-gray-500 outline-none resize-none"
         field="text"
