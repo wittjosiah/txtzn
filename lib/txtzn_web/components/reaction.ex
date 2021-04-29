@@ -23,7 +23,7 @@ defmodule TxtznWeb.Components.Reaction do
     >
       <span class="py-0.5">{{ @reaction }}</span>
       <span
-        class="border-l border-{{ color(@reactors, @user_id) }}-300 ml-1 pl-1 py-0.5"
+        class="border-l border-{{ color(@reactors, @user_id) }}-500 ml-1 pl-1 py-0.5"
       >
         {{ Enum.count(@reactors) }}
       </span>
@@ -33,11 +33,11 @@ defmodule TxtznWeb.Components.Reaction do
 
   defp class(reactors, user_id) do
     color = color(reactors, user_id)
-    "text-#{color}-600 bg-#{color}-100 hover:bg-#{color}-200 rounded mr-1 px-1 text-xs flex"
+    "bg-#{color}-300 hover:bg-#{color}-400 rounded mr-1 px-1 text-xs flex"
   end
 
   defp color(reactors, user_id) do
-    if reacted?(reactors, user_id), do: "blue", else: "gray"
+    if reacted?(reactors, user_id), do: "moss", else: "peach"
   end
 
   defp event(reactors, user_id) do

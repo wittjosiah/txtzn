@@ -34,10 +34,10 @@ defmodule TxtznWeb.Components.Button do
         Enum.join(["w-full", class], " ")
 
       {:kind, "primary"}, class ->
-        Enum.join(["px-4 py-2 bg-gray-300 hover:bg-gray-400", class], " ")
+        Enum.join(["px-4 py-2 bg-moss-300 hover:bg-moss-400", class], " ")
 
       {:kind, "secondary"}, class ->
-        Enum.join(["px-2 py-1 border border-gray-300 hover:bg-gray-200", class], " ")
+        Enum.join(["px-2 py-1 border border-moss-400 bg-moss-100 hover:bg-moss-200", class], " ")
 
       _, class ->
         class

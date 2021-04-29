@@ -85,7 +85,7 @@ defmodule TxtznWeb.Components.Post do
   end
 
   defp render_extended(%{"value" => %{"extendedText" => extended_text}}) do
-    Linkify.link_safe(extended_text, class: "text-blue-600 hover:underline")
+    Linkify.link_safe(extended_text, class: "text-moss-600 hover:underline")
   end
 
   defp post_url(%{"author" => %{"userId" => user_id}, "key" => key}) do

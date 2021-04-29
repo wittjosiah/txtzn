@@ -184,7 +184,7 @@ defmodule TxtznWeb.FeedLive do
   end
 
   defp process_content(%{"value" => %{"text" => text}} = post) do
-    text = Linkify.link_safe(text, class: "text-blue-600 hover:underline")
+    text = Linkify.link_safe(text, class: "text-moss-600 hover:underline")
     put_in(post, ["value", "text"], text)
   end
 

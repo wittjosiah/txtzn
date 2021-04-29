@@ -34,7 +34,7 @@
       {{ get_in(@post, ["value", "text"]) }}
       <span
         :if={{ get_in(@post, ["value", "extendedText"]) != "" }}
-        class="text-gray-600 bg-gray-200 rounded ml-1 px-1 text-xs"
+        class="text-gray-600 bg-peach-300 rounded ml-1 px-1 text-xs"
       >more
       </span>
     </p>
@@ -74,7 +74,7 @@
       <HiddenInput field="post_author" value={{ get_in(@post, ["author", "userId"]) }}/>
       <HiddenInput field="post_url" value={{ @post["url"] }}/>
       <Field class="flex-grow" name="reaction">
-        <TextInput class="p-1 w-full border border-gray-300 focus:border-gray-500 outline-none"/>
+        <TextInput class="p-1 w-full border border-peach-300 focus:border-peach-600 outline-none"/>
       </Field>
       <Button class="ml-2" kind="secondary" type="submit">
         Add

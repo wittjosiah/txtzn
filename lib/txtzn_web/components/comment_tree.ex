@@ -47,7 +47,7 @@ defmodule TxtznWeb.Components.CommentTree do
 
   def render(assigns) do
     ~H"""
-      <div :for={{ comment <- @comments }} class="border-l-2 border-gray-200 px-3 pt-1 my-3">
+      <div :for={{ comment <- @comments }} class="border-l-2 border-peach-300 px-3 pt-1 my-3">
         <div class="flex justify-between">
           <p class="w-2/3 font-bold overflow-ellipsis overflow-hidden whitespace-nowrap">
             <LiveRedirect
@@ -92,7 +92,7 @@ defmodule TxtznWeb.Components.CommentTree do
         <div class="hidden toggle">
           <Form action="/react" for={{ :reaction }} method="POST" opts={{ class: "flex" }} submit="react">
             <Field class="flex-grow" name="reaction">
-              <TextInput class="p-1 w-full border border-gray-300 focus:border-gray-500 outline-none"/>
+              <TextInput class="p-1 w-full border border-peach-300 focus:border-peach-600 outline-none"/>
             </Field>
             <Button class="ml-2" kind="secondary" type="submit">
               Add
@@ -114,7 +114,7 @@ defmodule TxtznWeb.Components.CommentTree do
             <HiddenInput field="root" value={{ root_value(comment) }}/>
             <Field class="flex flex-col flex-wrap mb-2" name="text">
               <TextArea
-                class="flex-grow h-screen-1/3 p-2 border border-gray-300 focus:border-gray-500 outline-none resize-none"
+                class="flex-grow h-screen-1/3 p-2 border border-peach-300 focus:border-peach-600 outline-none resize-none"
                 field="text"
               />
             </Field>
