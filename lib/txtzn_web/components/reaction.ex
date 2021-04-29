@@ -5,6 +5,8 @@ defmodule TxtznWeb.Components.Reaction do
 
   use TxtznWeb, :surface_component
 
+  prop connected?, :boolean, default: false
+
   prop reaction, :string, required: true
 
   prop reactors, :list, required: true
@@ -17,7 +19,7 @@ defmodule TxtznWeb.Components.Reaction do
     ~H"""
     <button
       :on-click={{ event(@reactors, @user_id) }}
-      class={{ class(@reactors, @user_id) }}
+      class={{ class(@connected?, @reactors, @user_id) }}
       phx-target={{ @target }}
       phx-value-reaction={{ @reaction }}
     >
@@ -31,9 +33,10 @@ defmodule TxtznWeb.Components.Reaction do
     """
   end
 
-  defp class(reactors, user_id) do
+  defp class(connected?, reactors, user_id) do
     color = color(reactors, user_id)
-    "bg-#{color}-300 hover:bg-#{color}-400 rounded mr-1 px-1 text-xs flex"
+    class = "bg-#{color}-300 rounded mr-1 px-1 text-xs flex"
+    if connected?, do: "#{class} hover:bg-#{color}-400", else: "#{class} cursor-default"
   end
 
   defp color(reactors, user_id) do

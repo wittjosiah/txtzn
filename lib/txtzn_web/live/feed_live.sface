@@ -1,4 +1,4 @@
-<label for="composer" class="cursor-pointer text-center block bg-moss-300 hover:bg-moss-400 mt-14 mx-2 py-2">
+<label for="composer" class="cursor-pointer text-center block bg-moss-300 hover:bg-moss-400 m-2 py-2">
   What's going on?
 </label>
 {{ checkbox :toggle, :toggle, checked: @composer_open, class: "hidden", id: "composer", "phx-click": "composer-toggle" }}

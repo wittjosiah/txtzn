@@ -85,6 +85,7 @@
   <div class="flex items-center my-1">
     <Reaction
       :for={{ {reaction, reactors} <- @post["reactions"] }}
+      connected?={{ connected?(@socket) }}
       reaction={{ reaction }}
       reactors={{ reactors }}
       target={{ "#" <> @post["key"] }}
