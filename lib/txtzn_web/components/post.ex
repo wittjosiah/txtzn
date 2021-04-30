@@ -74,6 +74,14 @@ defmodule TxtznWeb.Components.Post do
     end
   end
 
+  defp media_url(%{"author" => %{"userId" => user_id}, "key" => key}) do
+    Routes.media_path(Endpoint, :index, user_id, key)
+  end
+
+  defp post_url(%{"author" => %{"userId" => user_id}, "key" => key}) do
+    Routes.post_path(Endpoint, :index, user_id, key)
+  end
+
   defp reaction_count(%{"reactions" => reactions}) do
     Enum.reduce(reactions, 0, fn {_, reactors}, count -> count + Enum.count(reactors) end)
   end
@@ -86,9 +94,5 @@ defmodule TxtznWeb.Components.Post do
 
   defp render_extended(%{"value" => %{"extendedText" => extended_text}}) do
     Linkify.link_safe(extended_text, class: "text-moss-600 hover:underline")
-  end
-
-  defp post_url(%{"author" => %{"userId" => user_id}, "key" => key}) do
-    Routes.post_path(Endpoint, :index, user_id, key)
   end
 end

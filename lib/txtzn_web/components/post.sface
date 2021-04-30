@@ -59,7 +59,7 @@
     </LiveRedirect>
     <LiveRedirect
       :if={{ get_in(@post, ["value", "media"]) }}
-      to="#mediaTODO"
+      to={{ media_url(@post) }}
     >
       See Media
     </LiveRedirect>

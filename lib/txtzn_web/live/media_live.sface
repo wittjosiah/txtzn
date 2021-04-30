@@ -1,0 +1,11 @@
+<LiveRedirect
+  to={{ post_url(@post) }}
+>
+  {{ "<- Back to post" }}
+</LiveRedirect>
+
+<img
+  :for={{ media <- get_in(@post, ["value", "media"])}}
+  class="my-4"
+  src={{ media_url(@author_id, media) }}
+>
