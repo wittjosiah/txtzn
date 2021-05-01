@@ -1,0 +1,25 @@
+<h1 class="text-2xl p-2 mt-2">Your Communities</h1>
+
+<LiveRedirect
+  :for={{ community <- @communities }}
+  opts={{ title: community.user_id }}
+  to={{ Routes.profile_path(@socket, :index, community.user_id) }}
+>
+  <div class="p-2">
+    <h2 class="text-lg font-bold">{{ community.display_name }}</h2>
+    <p>{{ community.description }}</p>
+  </div>
+</LiveRedirect>
+
+<h1 class="text-2xl p-2 mt-2">Suggested Communities</h1>
+
+<LiveRedirect
+  :for={{ community <- @suggested_communities }}
+  opts={{ title: community.user_id }}
+  to={{ Routes.profile_path(@socket, :index, community.user_id) }}
+>
+  <div class="p-2">
+    <h2 class="text-lg font-bold">{{ community.display_name }}</h2>
+    <p>{{ community.description }}</p>
+  </div>
+</LiveRedirect>

@@ -21,12 +21,14 @@ defmodule TxtznWeb.Router do
 
     live "/", LandingLive, :index
     post "/comment", CommentController, :comment
+    live "/communities", CommunitiesLive, :index
     live "/feed", FeedLive, :index
     live "/feed/:key", FeedLive, :index
     post "/post", PostController, :post
     post "/react", ReactionController, :react
     live "/signin", SessionLive, :index
     post "/signin", SessionController, :sign_in
+    live "/:user_id", ProfileLive, :index
     live "/:user_id/ctzn.network/post/:key", PostLive, :index
     live "/:user_id/ctzn.network/post/:key/media", MediaLive, :index
   end

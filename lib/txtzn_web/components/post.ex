@@ -74,6 +74,14 @@ defmodule TxtznWeb.Components.Post do
     end
   end
 
+  defp author_url(%{"author" => %{"userId" => user_id}}) do
+    Routes.profile_path(Endpoint, :index, user_id)
+  end
+
+  defp community_url(%{"value" => %{"community" => %{"userId" => user_id}}}) do
+    Routes.profile_path(Endpoint, :index, user_id)
+  end
+
   defp media_url(%{"author" => %{"userId" => user_id}, "key" => key}) do
     Routes.media_path(Endpoint, :index, user_id, key)
   end

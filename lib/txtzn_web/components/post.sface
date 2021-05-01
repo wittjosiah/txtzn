@@ -3,7 +3,7 @@
     <p class="w-2/3 text-lg font-bold overflow-ellipsis overflow-hidden whitespace-nowrap">
       <LiveRedirect
         opts={{ title: get_in(@post, ["author", "userId"]) }}
-        to="#profileTODO"
+        to={{ author_url(@post) }}
       >
         {{ get_in(@post, ["author", "displayName"]) }}
       </LiveRedirect>
@@ -23,7 +23,7 @@
   >
     <LiveRedirect
       opts={{ title: get_in(@post, ["value", "community", "userId"]) }}
-      to="#communityTODO"
+      to={{ community_url(@post) }}
     >
       {{ get_in(@post, ["value", "community", "value", "displayName"]) }}
     </LiveRedirect>
